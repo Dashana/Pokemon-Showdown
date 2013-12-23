@@ -473,7 +473,6 @@ var cmds = {
 		}
 		if (Rooms.global.addChatRoom(target)) {
 			tour.reset(id);
-			hangman.reset(id);
 			return this.sendReply("The room '"+target+"' was created.");
 		}
 		return this.sendReply("An error occurred while trying to create the room '"+target+"'.");
@@ -491,8 +490,6 @@ var cmds = {
 				CommandParser = require('./command-parser.js');
 				CommandParser.uncacheTree('./tour.js');
 				tour = require('./tour.js').tour(tour);
-				CommandParser.uncacheTree('./hangman.js');
-				hangman = require('./hangman.js').hangman(hangman);
 			/*	CommandParser.uncacheTree('./frost-commands.js');
 				frostcommands = require('./frost-commands.js');*/
 				return this.sendReply('Chat commands have been hot-patched.');
