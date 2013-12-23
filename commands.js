@@ -370,11 +370,11 @@ var commands = exports.commands = {
 			price = 40;
 			if (price <= user.money) {
 				user.money = user.money - price;
-				this.sendReply('You have purchased a trainer card. You need to message an Admin capable of adding this (Frost Developer or BrittleWind).');
+				this.sendReply('You have purchased a trainer card. You need to message an Admin to have this added.');
 				user.canTrainerCard = true;
 				Rooms.rooms.staff.add(user.name + ' has purchased a trainer card!');
 				for (var u in Users.users) {
-					if (Users.users[u].frostDev || Users.users[u].userid == "brittlewind") {
+					if (Users.users[u].group == '~') {
 						Users.users[u].send('|pm|~Server|'+Users.users[u].group+Users.users[u].name+'|'+user.name+' has purchased a trainer card');
 					}
 				}
@@ -386,7 +386,7 @@ var commands = exports.commands = {
 			price = 10;
 			if (price <= user.money) {
 				user.money = user.money - price;
-				this.sendReply('You have purchased the ability to alter your avatar or trainer card. You need to message an Admin capable of adding this (Frost Developer or BrittleWind).');
+				this.sendReply('You have purchased the ability to alter your avatar or trainer card. You need to message an Admin capable of adding this.');
 				user.canFixItem = true;
 				this.add(user.name + ' has purchased the ability to set alter their card or avatar!');
 			} else {
@@ -442,7 +442,7 @@ var commands = exports.commands = {
 	
 	shop: function(target, room, user) {
 		if (!this.canBroadcast()) return;
-		this.sendReplyBox('<center><h4><b><u>Frost Bucks Shop</u></b></h4><table border="1" cellspacing ="0" cellpadding="3"><tr><th>Command</th><th>Description</th><th>Cost</th></tr>' +
+		this.sendReplyBox('<center><h4><b><u>PokéMart</u></b></h4><table border="1" cellspacing ="0" cellpadding="3"><tr><th>Command</th><th>Description</th><th>Cost</th></tr>' +
 			'<tr><td>Symbol</td><td>Buys a custom symbol to go infront of name and puts you at top of userlist (temporary until restart)</td><td>5</td></tr>' +
 			'<tr><td>Custom</td><td>Buys a custom avatar to be applied to your name (you supply)</td><td>20</td></tr>' +
 			'<tr><td>Animated</td><td>Buys an animated avatar to be applied to your name (you supply)</td><td>35</td></tr>' +
