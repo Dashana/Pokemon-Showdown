@@ -232,7 +232,7 @@ exports.tour = function(t) {
 				loser = r[key][loser];
 				tour[rid].history.push(r[key][winner] + "|" + r[key][loser]);
 				if (tour[rid].size >= 8) {
-					frostcommands.addTourLoss(loser, tier); //for recording tour stats
+				//	frostcommands.addTourLoss(loser, tier); //for recording tour stats
 				}
 				return r[key][winner];
 			}
@@ -320,7 +320,7 @@ exports.tour = function(t) {
 			if (w.length == 1) {
 				var tourMoney = 0;
 				var tooSmall = '';
-				var p = 'bucks';
+				var p = 'Points';
 				if (Rooms.rooms[rid].isOfficial) {
 					if (tour[rid].size >= 32) {
 						tourMoney = 3;
@@ -330,7 +330,7 @@ exports.tour = function(t) {
 					}
 					if (tour[rid].size < 16 && tour[rid].size >= 8) {
 						tourMoney = 1;
-						p = 'buck';
+						p = 'Point';
 					}
 					if (tour[rid].size < 8) {
 						tourMoney = 0;
@@ -344,9 +344,9 @@ exports.tour = function(t) {
 					tooSmall += '(this is not an official chatroom)';
 				}
 				//end tour
-				Rooms.rooms[rid].addRaw('<h2><font color="green">Congratulations <font color="black">' + Users.users[w[0]].name + '</font>!  You have won the ' + Tools.data.Formats[tour[rid].tier].name + ' Tournament!<br>You have also won ' + tourMoney + ' Frost ' + p + '! ' + tooSmall + '</font></h2>' + '<br><font color="blue"><b>SECOND PLACE:</b></font> ' + Users.users[l[0]].name + '<hr />');
+				Rooms.rooms[rid].addRaw('<h2><font color="green">Congratulations <font color="black">' + Users.users[w[0]].name + '</font>!  You have won the ' + Tools.data.Formats[tour[rid].tier].name + ' Tournament!<br>You have also won ' + tourMoney + ' Battle ' + p + '! ' + tooSmall + '</font></h2>' + '<br><font color="blue"><b>SECOND PLACE:</b></font> ' + Users.users[l[0]].name + '<hr />');
 				if (tour[rid].size >= 8) {
-					frostcommands.addTourWin(Users.users[w[0]].name, Tools.data.Formats[tour[rid].tier].name); //for recording tour stats
+					//frostcommands.addTourWin(Users.users[w[0]].name, Tools.data.Formats[tour[rid].tier].name); //for recording tour stats
 				}
 				//for now, this is the only way to get points/money
 				var data = fs.readFileSync('config/money.csv','utf8')
@@ -493,8 +493,8 @@ var cmds = {
 				tour = require('./tour.js').tour(tour);
 				CommandParser.uncacheTree('./hangman.js');
 				hangman = require('./hangman.js').hangman(hangman);
-				CommandParser.uncacheTree('./frost-commands.js');
-				frostcommands = require('./frost-commands.js');
+			/*	CommandParser.uncacheTree('./frost-commands.js');
+				frostcommands = require('./frost-commands.js');*/
 				return this.sendReply('Chat commands have been hot-patched.');
 			} catch (e) {
 				return this.sendReply('Something failed while trying to hotpatch chat: \n' + e.stack);
