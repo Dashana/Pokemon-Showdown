@@ -145,9 +145,9 @@ var commands = exports.commands = {
 	return this.sendReplyBox(total);
 	},
 	
-	awardbucks: 'givebp',
+	awardbattlepoints: 'givebp',
 	gb: 'givebp',
-	givebucks: function(target, room, user) {
+	givebattlepoints: function(target, room, user) {
 		if(!user.can('battlepoints')) return this.sendReply('You do not have enough authority to do this.');
 		if(!target) return this.parse('/help givebattlepoints');
 		var reason = '';
@@ -202,7 +202,7 @@ var commands = exports.commands = {
 		}
 		var p = 'battlepoints';
 		if (giveMoney < 2) p = 'battlepoint';
-		this.sendReply(targetUser.name + ' was given ' + giveMoney + ' ' + p + '. This user now has ' + targetUser.money + ' bucks. ('+reason+')');
+		this.sendReply(targetUser.name + ' was given ' + giveMoney + ' ' + p + '. This user now has ' + targetUser.money + ' battlepoints. ('+reason+')');
 		this.logModCommand(user.name+' gave '+targetUser.name+' '+giveMoney+' '+p+'. ('+reason+')');
 		targetUser.send('|popup|' + user.name + ' has given you ' + giveMoney + ' ' + p + '. ('+reason+')');
 		} else {
@@ -210,12 +210,12 @@ var commands = exports.commands = {
 		}
 	},
 	
-	tb: 'removebucks',
-	rb: 'removebucks',	
-	takebucks: 'removebucks',
+	tbp: 'removebattlepoints',
+	rbp: 'removebucks',	
+	takebattlepoints: 'removebattlepoints',
 	removebucks: function(target, room, user) {
 		if(!user.can('bucks')) return this.sendReply('You do not have enough authority to do this.');
-		if(!target) return this.parse('/help takebucks');
+		if(!target) return this.parse('/help takebattlepoints');
 		var reason = '';
 		if (target.indexOf(',') != -1) {
 			var parts = target.split(',');
@@ -266,13 +266,13 @@ var commands = exports.commands = {
 			var log = fs.createWriteStream('config/money.csv', {'flags': 'a'});
 			log.write("\n"+targetUser.userid+','+targetUser.money);
 		}
-		var p = 'bucks';
-		if (takeMoney < 2) p = 'buck';
-		this.sendReply(targetUser.name + ' has had ' + takeMoney + ' ' + p + ' removed. This user now has ' + targetUser.money + ' bucks. ('+reason+')');
+		var p = 'battlepoints';
+		if (takeMoney < 2) p = 'battlepoints';
+		this.sendReply(targetUser.name + ' has had ' + takeMoney + ' ' + p + ' removed. This user now has ' + targetUser.money + ' battlepoints. ('+reason+')');
 		this.logModCommand(user.name+' removed '+takeMoney+' '+p+' from '+targetUser.name+'. ('+reason+')');
-		targetUser.send(user.name + ' has removed ' + takeMoney + ' bucks from you. ('+reason+')');
+		targetUser.send(user.name + ' has removed ' + takeMoney + ' battlepoints from you. ('+reason+')');
 		} else {
-			return this.parse('/help removebucks');
+			return this.parse('/help removebattlepoints');
 		}
 	},
 
@@ -312,7 +312,7 @@ var commands = exports.commands = {
 				user.canCustomSymbol = true;
 				this.add(user.name + ' has purchased a custom symbol!');
 			} else {
-				return this.sendReply('You do not have enough bucks for this. You need ' + (price - user.money) + ' more bucks to buy ' + target + '.');
+				return this.sendReply('You do not have enough battlepoints for this. You need ' + (price - user.money) + ' more battlepoints to buy ' + target + '.');
 			}
 		}
 		if (target[0] === 'custom') {
@@ -332,7 +332,7 @@ var commands = exports.commands = {
 					}
 				}
 			} else {
-				return this.sendReply('You do not have enough bucks for this. You need ' + (price - user.money) + ' more bucks to buy ' + target + '.');
+				return this.sendReply('You do not have enough battlepoints for this. You need ' + (price - user.money) + ' more battlepoints to buy ' + target + '.');
 			}
 		}
 		if (target[0] === 'animated') {
@@ -352,7 +352,7 @@ var commands = exports.commands = {
 					}
 				}
 			} else {
-				return this.sendReply('You do not have enough bucks for this. You need ' + (price - user.money) + ' more bucks to buy ' + target + '.');
+				return this.sendReply('You do not have enough battle points for this. You need ' + (price - user.money) + ' more battlepoints to buy ' + target + '.');
 			}
 		}
 		if (target[0] === 'room') {
@@ -363,7 +363,7 @@ var commands = exports.commands = {
 				user.canChatRoom = true;
 				this.add(user.name + ' has purchased a chat room!');
 			} else {
-				return this.sendReply('You do not have enough bucks for this. You need ' + (price - user.money) + ' more bucks to buy ' + target + '.');
+				return this.sendReply('You do not have enough battlepoints for this. You need ' + (price - user.money) + ' more battlepoints to buy ' + target + '.');
 			}
 		}
 		if (target2 === 'trainer') {
@@ -379,7 +379,7 @@ var commands = exports.commands = {
 					}
 				}
 			} else {
-				return this.sendReply('You do not have enough bucks for this. You need ' + (price - user.money) + ' more bucks to buy ' + target + '.');
+				return this.sendReply('You do not have enough battlepoints for this. You need ' + (price - user.money) + ' more battlepoints to buy ' + target + '.');
 			}
 		}
 		if (target2 === 'fix') {
@@ -390,7 +390,7 @@ var commands = exports.commands = {
 				user.canFixItem = true;
 				this.add(user.name + ' has purchased the ability to set alter their card or avatar!');
 			} else {
-				return this.sendReply('You do not have enough bucks for this. You need ' + (price - user.money) + ' more bucks to buy ' + target + '.');
+				return this.sendReply('You do not have enough battlepoints for this. You need ' + (price - user.money) + ' more bucks to battlepoints ' + target + '.');
 			}
 		}
 		if (target2 === 'declare') {
@@ -406,7 +406,7 @@ var commands = exports.commands = {
 					}
 				}
 			} else {
-				return this.sendReply('You do not have enough bucks for this. You need ' + (price - user.money) + ' more bucks to buy ' + target + '.');
+				return this.sendReply('You do not have enough battlepoints for this. You need ' + (price - user.money) + ' more battlepoints to buy ' + target + '.');
 			}
 		}
 		if (match === true) {
@@ -691,7 +691,7 @@ var commands = exports.commands = {
 			'/shop - Show the shop with the items you can buy.<br />' + 
 			'/buy [command] - Buy an item from the shop using the item command name.<br />' +
 			'/getbucks - A basic introduction into the currency system.<br />' + 
-			'/atm [username] - Show your bucks (if just /atm) or show someone else\'s bucks.<br />' + 
+			'/atm [username] - Show your bucks (if just /atm) or show someone else\'s bp.<br />' + 
 			'/prizes - A link to the prize page and ways to earn bucks.');
 	},
 	
