@@ -390,7 +390,7 @@ var commands = exports.commands = {
 				user.canFixItem = true;
 				this.add(user.name + ' has purchased the ability to set alter their card or avatar!');
 			} else {
-				return this.sendReply('You do not have enough battlepoints for this. You need ' + (price - user.money) + ' more bucks to battlepoints ' + target + '.');
+				return this.sendReply('You do not have enough battlepoints for this. You need ' + (price - user.money) + ' more battlepoints to buy ' + target + '.');
 			}
 		}
 		if (target2 === 'declare') {
