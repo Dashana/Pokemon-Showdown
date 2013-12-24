@@ -53,8 +53,8 @@ var commands = exports.commands = {
 			}
 		}
 		if (mMatch === true) {
-			var p = 'bp';
-			if (money < 2) p = 'bp';
+			var p = 'battle points';
+			if (money < 2) p = 'battle points';
 			total += user.name + ' has ' + money + ' ' + p + '.<br />';
 		}
 		if (mMatch === false) {
