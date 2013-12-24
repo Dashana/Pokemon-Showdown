@@ -108,12 +108,12 @@ var commands = exports.commands = {
 			}
 		}
 		if (mMatch === true) {
-			var p = 'bp';
-			if (money < 2) p = 'bp';
+			var p = 'battlepoints';
+			if (money < 2) p = 'battlepoints';
 			total += targetUser.name + ' has ' + money + ' ' + p + '.<br />';
 		} 
 		if (mMatch === false) {
-			total += targetUser.name + ' has no bp.<br />';
+			total += targetUser.name + ' has no battlepoints.<br />';
 		}
 		targetUser.money = money;
 		var data = fs.readFileSync('config/coins.csv','utf8')
@@ -200,13 +200,13 @@ var commands = exports.commands = {
 			var log = fs.createWriteStream('config/money.csv', {'flags': 'a'});
 			log.write("\n"+targetUser.userid+','+targetUser.money);
 		}
-		var p = 'bucks';
-		if (giveMoney < 2) p = 'buck';
+		var p = 'battlepoints';
+		if (giveMoney < 2) p = 'battlepoint';
 		this.sendReply(targetUser.name + ' was given ' + giveMoney + ' ' + p + '. This user now has ' + targetUser.money + ' bucks. ('+reason+')');
 		this.logModCommand(user.name+' gave '+targetUser.name+' '+giveMoney+' '+p+'. ('+reason+')');
 		targetUser.send('|popup|' + user.name + ' has given you ' + giveMoney + ' ' + p + '. ('+reason+')');
 		} else {
-			return this.parse('/help givebucks');
+			return this.parse('/help givebattlepoints');
 		}
 	},
 	
