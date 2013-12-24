@@ -211,7 +211,7 @@ var commands = exports.commands = {
 	},
 	
 	tbp: 'removebattlepoints',
-	rbp: 'removebucks',	
+	rbp: 'takebattlepoints',	
 	takebattlepoints: 'removebattlepoints',
 	removebucks: function(target, room, user) {
 		if(!user.can('bucks')) return this.sendReply('You do not have enough authority to do this.');
