@@ -1813,6 +1813,10 @@ var commands = exports.commands = {
          * Server management commands
          *********************************************************/
         
+          butterific: function() {
+                return this.parse("/me is so " + target + " butterific.");
+          },
+          
           d: 'poof',
           cpoof: 'poof',
           poof: (function () {
