@@ -109,11 +109,11 @@ var commands = exports.commands = {
 		}
 		if (mMatch === true) {
 			var p = 'battlepoints';
-			if (money < 2) p = 'battlepoints';
+			if (money < 2) p = 'battlepoint';
 			total += targetUser.name + ' has ' + money + ' ' + p + '.<br />';
 		} 
 		if (mMatch === false) {
-			total += targetUser.name + ' has no battlepoints.<br />';
+			total += targetUser.name + ' has no battle points.<br />';
 		}
 		targetUser.money = money;
 		var data = fs.readFileSync('config/coins.csv','utf8')
@@ -148,7 +148,7 @@ var commands = exports.commands = {
 	awardbattlepoints: 'givebp',
 	gb: 'givebp',
 	givebattlepoints: function(target, room, user) {
-		if(!user.can('battlepoints')) return this.sendReply('You do not have enough authority to do this.');
+		if(!user.can('battle points')) return this.sendReply('You do not have enough authority to do this.');
 		if(!target) return this.parse('/help givebattlepoints');
 		var reason = '';
 		if (target.indexOf(',') != -1) {
@@ -214,7 +214,7 @@ var commands = exports.commands = {
 	rbp: 'takebattlepoints',	
 	takebattlepoints: 'removebattlepoints',
 	removebucks: function(target, room, user) {
-		if(!user.can('bucks')) return this.sendReply('You do not have enough authority to do this.');
+		if(!user.can('battlepoints')) return this.sendReply('You do not have enough authority to do this.');
 		if(!target) return this.parse('/help takebattlepoints');
 		var reason = '';
 		if (target.indexOf(',') != -1) {
@@ -267,10 +267,10 @@ var commands = exports.commands = {
 			log.write("\n"+targetUser.userid+','+targetUser.money);
 		}
 		var p = 'battlepoints';
-		if (takeMoney < 2) p = 'battlepoints';
+		if (takeMoney < 2) p = 'battlepoint';
 		this.sendReply(targetUser.name + ' has had ' + takeMoney + ' ' + p + ' removed. This user now has ' + targetUser.money + ' battlepoints. ('+reason+')');
 		this.logModCommand(user.name+' removed '+takeMoney+' '+p+' from '+targetUser.name+'. ('+reason+')');
-		targetUser.send(user.name + ' has removed ' + takeMoney + ' battlepoints from you. ('+reason+')');
+		targetUser.send(user.name + ' has removed ' + takeMoney + ' battle points from you. ('+reason+')');
 		} else {
 			return this.parse('/help removebattlepoints');
 		}
@@ -312,7 +312,7 @@ var commands = exports.commands = {
 				user.canCustomSymbol = true;
 				this.add(user.name + ' has purchased a custom symbol!');
 			} else {
-				return this.sendReply('You do not have enough battlepoints for this. You need ' + (price - user.money) + ' more battlepoints to buy ' + target + '.');
+				return this.sendReply('You do not have enough battle points for this. You need ' + (price - user.money) + ' more battlepoints to buy ' + target + '.');
 			}
 		}
 		if (target[0] === 'custom') {
@@ -363,7 +363,7 @@ var commands = exports.commands = {
 				user.canChatRoom = true;
 				this.add(user.name + ' has purchased a chat room!');
 			} else {
-				return this.sendReply('You do not have enough battlepoints for this. You need ' + (price - user.money) + ' more battlepoints to buy ' + target + '.');
+				return this.sendReply('You do not have enough battle points for this. You need ' + (price - user.money) + ' more battlepoints to buy ' + target + '.');
 			}
 		}
 		if (target2 === 'trainer') {
@@ -379,7 +379,7 @@ var commands = exports.commands = {
 					}
 				}
 			} else {
-				return this.sendReply('You do not have enough battlepoints for this. You need ' + (price - user.money) + ' more battlepoints to buy ' + target + '.');
+				return this.sendReply('You do not have enough battle points for this. You need ' + (price - user.money) + ' more battlepoints to buy ' + target + '.');
 			}
 		}
 		if (target2 === 'fix') {
@@ -390,7 +390,7 @@ var commands = exports.commands = {
 				user.canFixItem = true;
 				this.add(user.name + ' has purchased the ability to set alter their card or avatar!');
 			} else {
-				return this.sendReply('You do not have enough battlepoints for this. You need ' + (price - user.money) + ' more battlepoints to buy ' + target + '.');
+				return this.sendReply('You do not have enough battle points for this. You need ' + (price - user.money) + ' more battlepoints to buy ' + target + '.');
 			}
 		}
 		if (target2 === 'declare') {
@@ -406,7 +406,7 @@ var commands = exports.commands = {
 					}
 				}
 			} else {
-				return this.sendReply('You do not have enough battlepoints for this. You need ' + (price - user.money) + ' more battlepoints to buy ' + target + '.');
+				return this.sendReply('You do not have enough battle points for this. You need ' + (price - user.money) + ' more battlepoints to buy ' + target + '.');
 			}
 		}
 		if (match === true) {
