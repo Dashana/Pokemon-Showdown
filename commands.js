@@ -1809,10 +1809,6 @@ var commands = exports.commands = {
 		this.sendReply('Removed \"'+target+'\" from the list of banned words.');
 	},
 
-	/*********************************************************
-	 * Server management commands
-	 *********************************************************/
-
 	 /*********************************************************
          * Server management commands
          *********************************************************/
