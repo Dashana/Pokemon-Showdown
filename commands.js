@@ -53,12 +53,12 @@ var commands = exports.commands = {
 			}
 		}
 		if (mMatch === true) {
-			var p = 'bucks';
-			if (money < 2) p = 'buck';
+			var p = 'bp';
+			if (money < 2) p = 'bp';
 			total += user.name + ' has ' + money + ' ' + p + '.<br />';
 		}
 		if (mMatch === false) {
-			total += 'You have no bucks.<br />';
+			total += 'You have no battle points.<br />';
 		}
 		user.money = money;
 		var data = fs.readFileSync('config/coins.csv','utf8')
@@ -108,12 +108,12 @@ var commands = exports.commands = {
 			}
 		}
 		if (mMatch === true) {
-			var p = 'bucks';
-			if (money < 2) p = 'buck';
+			var p = 'bp';
+			if (money < 2) p = 'bp';
 			total += targetUser.name + ' has ' + money + ' ' + p + '.<br />';
 		} 
 		if (mMatch === false) {
-			total += targetUser.name + ' has no bucks.<br />';
+			total += targetUser.name + ' has no bp.<br />';
 		}
 		targetUser.money = money;
 		var data = fs.readFileSync('config/coins.csv','utf8')
@@ -145,11 +145,11 @@ var commands = exports.commands = {
 	return this.sendReplyBox(total);
 	},
 	
-	awardbucks: 'givebucks',
-	gb: 'givebucks',
+	awardbucks: 'givebp',
+	gb: 'givebp',
 	givebucks: function(target, room, user) {
-		if(!user.can('bucks')) return this.sendReply('You do not have enough authority to do this.');
-		if(!target) return this.parse('/help givebucks');
+		if(!user.can('battlepoints')) return this.sendReply('You do not have enough authority to do this.');
+		if(!target) return this.parse('/help givebattlepoints');
 		var reason = '';
 		if (target.indexOf(',') != -1) {
 			var parts = target.split(',');
