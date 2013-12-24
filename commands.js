@@ -1813,27 +1813,126 @@ var commands = exports.commands = {
          * Server management commands
          *********************************************************/
         
-        hide: function(target, room, user) {
-                if (this.can('hide')) {
-                        user.getIdentity = function(){
-                                if(this.muted)        return '!' + this.name;
-                                if(this.locked) return '‽' + this.name;
-                                return ' ' + this.name;
-                        };
-                        user.updateIdentity();
-                        this.sendReply('You have hidden your staff symbol.');
-                        return false;
-                }
+          d: 'poof',
+          cpoof: 'poof',
+          poof: (function () {
+                var messages = [
+                        "has vanished into nothingness!",
+                        "visited kupo's bedroom and never returned!",
+                        "used Explosion!",
+                        "fell into the void.",
+                        "was squished by pandaw's large behind!",
+                        "became EnerG's slave!",
+                        "became kupo's love slave!",
+                        "has left the building.",
+                        "felt Thundurus's wrath!",
+                        "died of a broken heart.",
+                        "got lost in a maze!",
+                        "was hit by Magikarp's Revenge!",
+                        "was sucked into a whirlpool!",
+                        "got scared and left the server!",
+                        "fell off a cliff!",
+                        "got eaten by a bunch of piranhas!",
+                        "is blasting off again!",
+                        "A large spider descended from the sky and picked up {{user}}.",
+                        "tried to touch RisingPokeStar!",
+                        "got their sausage smoked by Charmanderp!",
+                        "was forced to give mpea an oil massage!",
+                        "took an arrow to the knee... and then one to the face.",
+                        "peered through the hole on Shedinja's back",
+                        "recieved judgment from the almighty Arceus!",
+                        "used Final Gambit and missed!",
+                        "pissed off a Gyarados!",
+                        "screamed \"BSHAX IMO\"!",
+                        "was actually a 12 year and was banned for COPPA.",
+                        "got lost in the illusion of reality.",
+                        "was unfortunate and didn't get a cool message.",
+                        "The Immortal accidently kicked {{user}} from the server!",
+                        "was knocked out cold by Fallacies!",
+                        "died making love to an Excadrill!",
+                        "was shoved in a Blendtec Blender with iPad!",
+                        "was BLEGHED on by LightBlue!",
+                        "was bitten by a rabid Wolfie!",
+                        "was kicked from server! (lel clause)",
+                        "was Pan Hammered!"
+                ];
 
+                return function(target, room, user) {
+                        if (config.poofoff) return this.sendReply("Poof is currently disabled.");
+                        if (target && !this.can('broadcast')) return false;
+                        if (room.id !== 'lobby') return false;
+                        var message = target || messages[Math.floor(Math.random() * messages.length)];
+                        if (message.indexOf('{{user}}') < 0)
+                                message = '{{user}} ' + message;
+                        message = message.replace(/</g, '&lt;').replace(/{{user}}/g, user.name);
+                        if (!this.canTalk(message)) return false;
+
+                        var colour = '#' + [1, 1, 1].map(function () {
+                                var part = Math.floor(Math.random() * 0xaa);
+                                return (part < 0x10 ? '0' : '') + part.toString(16);
+                        }).join('');
+
+                        room.addRaw('<center><strong><font color="' + colour + '">~~ ' + message + ' ~~</font></strong></center>');
+                        user.disconnectAll();
+                };
+        })(),
+
+        poofoff: 'nopoof',
+        nopoof: function() {
+                if (!this.can('warn')) return false;
+                config.poofoff = true;
+                return this.sendReply("Poof is now disabled.");
         },
 
-        show: function(target, room, user) {
-                if (this.can('hide')) {
-                        delete user.getIdentity
-                        user.updateIdentity();
-                        this.sendReply('You have revealed your staff symbol.');
-                        return false;
-                }
+        poofon: function() {
+                if (!this.can('warn')) return false;
+                config.poofoff = false;
+                return this.sendReply("Poof is now enabled.");
+        },
+ 
+   	tell: function(target, room, user) {
+                if (!target) return false;
+                var message = this.splitTarget(target);
+                if (!message) return this.sendReply('You forgot the comma.');
+                if (user.locked) return this.sendReply("You cannot use this command while locked.");
+
+                message = this.canTalk(message, null);
+                if (!message) return false;
+
+                if (!global.tells) global.tells = {};
+                if (!tells[this.targetUsername]) tells[this.targetUsername] = [];
+                if (tells[this.targetUsername].length > 5) return this.sendReply("User " + this.targetUsername + " has too many tells queued.");
+
+                tells[this.targetUsername].push(Date().toLocaleString() + " - " + user.getIdentity() + " said: " + message);
+                return this.sendReply("Message \"" + message + "\" sent to " + this.targetUsername + ".");
+        },
+
+        hide: 'hideauth',
+        hideauth: function(target, room, user) {
+                if (!this.can('hide')) return false;
+                target = (target || config.groupsranking[0])[0];
+                if (config.groupsranking.indexOf(target) < 0) {
+                        target = config.groupsranking[0];
+                        this.sendReply("You have picked an invalid group, defaulting to '" + target + "'.");
+                } else if (config.groupsranking.indexOf(target) >= config.groupsranking.indexOf(user.group))
+                        return this.sendReply("The group you have chosen is either your current group OR one of higher rank. You cannot hide like that.");
+
+                user.getIdentity = function (roomid) {
+                        var identity = Object.getPrototypeOf(this).getIdentity.call(this, roomid);
+                        if (identity[0] === this.group)
+                                return target + identity.slice(1);
+                        return identity;
+                };
+                user.updateIdentity();
+                return this.sendReply("You are now hiding your auth as '" + target + "'.");
+        },
+
+        show: 'showauth',
+        showauth: function(target, room, user) {
+                if (!this.can('hide')) return false;
+                delete user.getIdentity;
+                user.updateIdentity();
+                return this.sendReply("You are now showing your authority!");
         },
 
         hotpatch: function(target, room, user) {
