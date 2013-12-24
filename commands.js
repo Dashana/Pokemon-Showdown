@@ -1840,32 +1840,6 @@ var commands = exports.commands = {
                 }
         },
 
-        customavatar: function(target, room, user, connection) {
-                if (!this.can('customavatars')) return false;
-                if (!target) return connection.sendTo(room, 'Usage: /customavatar username, URL');
-                var http = require('http-get');
-                target = target.split(", ");
-                var username = Users.get(target[0]);
-        var filename = target[1].split('.');
-                filename = '.'+filename.pop();
-                if (filename != ".png" && filename != ".gif") return connection.sendTo(room, '/customavatar - Invalid image type! Images are required to be png or gif.');
-        filename = Users.get(username)+filename;
-                if (!username) return this.sendReply('User '+target[0]+' not found.');
-                http.get(target[1], 'config/avatars/' + filename, function (error, result) {
-                    if (error) {
-                        return connection.sendTo(room, '/customavatar - You supplied an invalid URL!');
-                        //        console.log(error);
-                    } else {
-                    //  connection.sendTo(room, 'File saved to: ' + result.file);
-                                avatar.write('\n'+username+','+filename);
-                                Users.get(username).avatar = filename;
-                                connection.sendTo(room, username+' has received a custom avatar.');
-                                Users.get(username).sendTo(room, 'You have received a custom avatar from ' + user.name + '.');
-                    }
-                });
-                this.logModCommand(user.name + ' added a custom avatar for ' + username + '.');
-        },
-        
         hotpatch: function(target, room, user) {
 		if (!target) return this.parse('/help hotpatch');
 		if (!this.can('hotpatch')) return false;
