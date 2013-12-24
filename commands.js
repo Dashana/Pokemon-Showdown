@@ -145,10 +145,10 @@ var commands = exports.commands = {
 	return this.sendReplyBox(total);
 	},
 	
-	awardbattlepoints: 'givebp',
+	awardbattlepoints: 'awardbp',
 	gb: 'givebp',
 	givebattlepoints: function(target, room, user) {
-		if(!user.can('battle points')) return this.sendReply('You do not have enough authority to do this.');
+		if(!user.can('battlepoints')) return this.sendReply('You do not have enough authority to do this.');
 		if(!target) return this.parse('/help givebattlepoints');
 		var reason = '';
 		if (target.indexOf(',') != -1) {
@@ -210,12 +210,12 @@ var commands = exports.commands = {
 		}
 	},
 	
-	tbp: 'removebattlepoints',
-	rbp: 'takebattlepoints',	
-	takebattlepoints: 'removebattlepoints',
+	tbp: 'removebp',
+	rbp: 'takebp',	
+	takebattlepoints: 'removebp',
 	removebucks: function(target, room, user) {
 		if(!user.can('battlepoints')) return this.sendReply('You do not have enough authority to do this.');
-		if(!target) return this.parse('/help takebattlepoints');
+		if(!target) return this.parse('/help takebp');
 		var reason = '';
 		if (target.indexOf(',') != -1) {
 			var parts = target.split(',');
@@ -268,11 +268,11 @@ var commands = exports.commands = {
 		}
 		var p = 'battlepoints';
 		if (takeMoney < 2) p = 'battlepoint';
-		this.sendReply(targetUser.name + ' has had ' + takeMoney + ' ' + p + ' removed. This user now has ' + targetUser.money + ' battlepoints. ('+reason+')');
+		this.sendReply(targetUser.name + ' has had ' + takeMoney + ' ' + p + ' removed. This user now has ' + targetUser.money + ' battle points. ('+reason+')');
 		this.logModCommand(user.name+' removed '+takeMoney+' '+p+' from '+targetUser.name+'. ('+reason+')');
 		targetUser.send(user.name + ' has removed ' + takeMoney + ' battle points from you. ('+reason+')');
 		} else {
-			return this.parse('/help removebattlepoints');
+			return this.parse('/help removebp');
 		}
 	},
 
@@ -312,7 +312,7 @@ var commands = exports.commands = {
 				user.canCustomSymbol = true;
 				this.add(user.name + ' has purchased a custom symbol!');
 			} else {
-				return this.sendReply('You do not have enough battle points for this. You need ' + (price - user.money) + ' more battlepoints to buy ' + target + '.');
+				return this.sendReply('You do not have enough battle points for this. You need ' + (price - user.money) + ' more battle points to buy ' + target + '.');
 			}
 		}
 		if (target[0] === 'custom') {
@@ -332,7 +332,7 @@ var commands = exports.commands = {
 					}
 				}
 			} else {
-				return this.sendReply('You do not have enough battlepoints for this. You need ' + (price - user.money) + ' more battlepoints to buy ' + target + '.');
+				return this.sendReply('You do not have enough battle points for this. You need ' + (price - user.money) + ' more battle points to buy ' + target + '.');
 			}
 		}
 		if (target[0] === 'animated') {
@@ -352,7 +352,7 @@ var commands = exports.commands = {
 					}
 				}
 			} else {
-				return this.sendReply('You do not have enough battle points for this. You need ' + (price - user.money) + ' more battlepoints to buy ' + target + '.');
+				return this.sendReply('You do not have enough battle points for this. You need ' + (price - user.money) + ' more battle points to buy ' + target + '.');
 			}
 		}
 		if (target[0] === 'room') {
@@ -363,7 +363,7 @@ var commands = exports.commands = {
 				user.canChatRoom = true;
 				this.add(user.name + ' has purchased a chat room!');
 			} else {
-				return this.sendReply('You do not have enough battle points for this. You need ' + (price - user.money) + ' more battlepoints to buy ' + target + '.');
+				return this.sendReply('You do not have enough battle points for this. You need ' + (price - user.money) + ' more battle points to buy ' + target + '.');
 			}
 		}
 		if (target2 === 'trainer') {
