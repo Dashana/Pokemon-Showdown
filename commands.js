@@ -1156,7 +1156,7 @@ var commands = exports.commands = {
                 if (target.toLowerCase() == "lobby") {
                         return connection.sendTo('lobby','|html|<div class="infobox"><center>Welcome to Victory Road!</center><br />' +
                         '<center>This server specializes in competitive battling, ranks, and tournaments ONLY.</center><br />' +
-                        '<center>As trainers interact in battles and participate in tournaments, winners will be rewarded with a certain amount of bp, also known as battle points. Your rank depends on the amount of bp you have.</center><br />' +
+                        '<center>As trainers interact in battles and participate in tournaments, winners will be rewarded with a certain amount of bp, also known as battle points. Your rank depends on the amount of bp you have. Check groups to see the different ranks.</center><br />' +
                         '<center><img src="http://www.serebii.net/pokearth/maps/unova/47.png"></center></div>');
                 }
                 if (targetRoom.id === "spamroom" && !user.can('declare')) {
