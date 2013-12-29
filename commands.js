@@ -1154,10 +1154,10 @@ var commands = exports.commands = {
                         return connection.sendTo(target, "|noinit|joinfailed|The room '"+target+"' could not be joined.");
                 }
                 if (target.toLowerCase() == "lobby") {
-                        return connection.sendTo('lobby','|html|<div class="infobox"><center>Welcome to Victory Road!</center><br />' +
+                        return connection.sendTo('lobby','|html|<div class="infobox"><center><strong>Welcome to Victory Road!</center><br />' +
                         '<center>This server specializes in competitive battling, ranks, and tournaments ONLY.</center><br />' +
                         '<center>As trainers interact in battles and participate in tournaments, winners will be rewarded with a certain amount of bp, also known as battle points. Your rank depends on the amount of bp you have. Check groups to see the different ranks.</center><br />' +
-                        '<center><img src="http://www.serebii.net/pokearth/maps/unova/47.png"></center></div>');
+                        '<center><img src="http://www.serebii.net/pokearth/maps/unova/47.png"></strong></center></div>');
                 }
                 if (targetRoom.id === "spamroom" && !user.can('declare')) {
                         return connection.sendTo(target, "|noinit|joinfailed|You cannot join this room.");
