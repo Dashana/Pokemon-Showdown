@@ -15,6 +15,7 @@ var crypto = require('crypto');
 
 const MAX_REASON_LENGTH = 300;
 
+var ipbans = fs.createWriteStream('config/ipbans.txt', {'flags': 'a'}); // this is for /permaban
 var inShop = ['symbol', 'custom', 'animated', 'room', 'trainer', 'fix', 'declare'];
 var closeShop = false;
 var closedShop = 0;
@@ -1511,6 +1512,42 @@ var commands = exports.commands = {
 		this.addModCommand(user.name+' unbanned the '+(target.charAt(target.length-1)==='*'?'IP range':'IP')+': '+target);
 	},
 
+	unpermaban: function(target, room, user) {
+		if (!target) return this.sendReply('/unpermaban [IP] - Removes a permanent ban. Requires: & ~');
+		if (!this.can('permaban')) return this.sendReply('Access denied.');
+		var self = this;
+		removeIpBan(target, function (found) {
+			if (found) {
+				self.privateModCommand('('+target+' was removed from the permanent ban list by '+user.name+'.)');
+				return;
+			} else {
+				self.sendReply(target+' was not found on the permanent ban list.');
+				return;
+			}
+		})
+	},
+
+	pban: 'permaban',
+	permban: 'permaban',
+	permaban: function(target, room, user) {
+		if (!target) return this.sendReply('/permaban [username] - Permanently bans the user from the server. Bans placed by this command do not reset on server restarts. Requires: & ~');
+		if (!this.can('permaban', targetUser)) return this.sendReply('Access denied.');              
+		target = this.splitTarget(target);
+		var targetUser = this.targetUser;
+		if (!targetUser) {
+			return this.sendReply('User '+this.targetUsername+' not found.');
+		}
+		if (Users.checkBanned(targetUser.latestIp) && !target && !targetUser.connected) {
+			var problem = ' but was already banned';
+			return this.privateModCommand('('+targetUser.name+' would be banned by '+user.name+problem+'.)');
+		}
+
+		targetUser.popup(user.name+" has permanently banned you.");
+		this.addModCommand(targetUser.name+" was permanently banned by "+user.name+"."+ (target ? " (" + target + ")" : ""), ' ('+targetUser.latestIp+')');
+		targetUser.ban();
+		ipbans.write('\n'+targetUser.latestIp);
+	},
+
 	/*********************************************************
 	 * Moderating: Other
 	 *********************************************************/
@@ -2626,3 +2663,38 @@ var commands = exports.commands = {
 	},
 
 };
+
+// this function is needed for /unpermaban
+function removeIpBan(target, callback) {
+	var data = fs.readFileSync('config/ipbans.txt','utf8');
+	var match = false;
+	var row = (''+data).split("\n");
+	var line = '';
+	if (!target) return false;
+	for (var i = row.length; i > -1; i--) {
+		if (!row[i]) continue;
+		var parts = row[i].split(",");
+		if (target == parts[0]) {
+			match = true;
+			line = line + row[i];
+			break;
+		}
+	}
+	if (match === true) {
+		var re = new RegExp(line,"g");
+		fs.readFile('config/ipbans.txt', 'utf8', function (err,data) {
+			if (err) {
+				return console.log(err);
+			}
+			var result = data.replace(re, '');
+			fs.writeFile('config/ipbans.txt', result, 'utf8', function (err) {
+				if (err) return console.log(err);
+			});
+			callback(true);
+			return;
+		});
+	} else {
+		callback(false);
+		return;
+	}
+}
