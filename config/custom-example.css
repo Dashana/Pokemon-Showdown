@@ -1,9 +1,40 @@
-/**
- * Custom CSS declarations
- *
- * If your server is registered, you can create a file named `custom.css`
- * in the `config` directory and populate it with CSS rules to override the
- * normal client styles, when the client is connected to your server. In
- * other words, you can use this facility to introduce a custom theme for
- * your server.
- */
+header{
+        background: #c14331;
+}
+ 
+.mainmenuwrapper {
+        background:url("http://i.imgur.com/gMpOY5w.png?1") bottom right no-repeat;
+}
+ 
+body {
+        background: url("http://fc02.deviantart.net/fs71/f/2011/182/b/2/cave_interior_background_by_sketcheth-d3kpvx8.jpg");
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+ 
+.userbar {
+border: 1px solid #b6b6b6;
+padding: 5px;
+    background: url("http://i.imgur.com/Q8vHT0Y.png");
+    overflow: auto;
+margin-top: -5px;
+}
+ 
+.pad, .ps-popup, .pm-log, .ps-room.ps-room-opaque{
+    background: url("http://i.imgur.com/Q8vHT0Y.png");
+    overflow: auto;
+  }
+ 
+.menugroup .button{
+        background: #ff4b4b;
+}
+ 
+.menugroup .button:hover{
+        background: #ff7e00;
+}
+     
+.chat-log {
+          background: url("") bottom right no-repeat;
+        }
