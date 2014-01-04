@@ -1328,6 +1328,10 @@ var commands = exports.commands = {
 			matched = true;
 			this.sendReply('/help OR /h OR /? - Gives you help.');
 		}
+                if (target === 'all' || target === 'stafflist') {
+                        matched = true;
+                        this.sendReply('/stafflist - Shows you the list of staff members.');	
+		}
 		if (!target) {
 			this.sendReply('COMMANDS: /msg, /reply, /ignore, /ip, /rating, /nick, /avatar, /rooms, /whois, /help, /away, /back, /timestamps, /highlight');
 			this.sendReply('INFORMATIONAL COMMANDS: /data, /dexsearch, /groups, /opensource, /avatars, /faq, /rules, /intro, /tiers, /othermetas, /learn, /analysis, /calc (replace / with ! to broadcast. (Requires: + % @ & ~))');
