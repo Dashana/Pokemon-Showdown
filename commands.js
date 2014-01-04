@@ -2351,6 +2351,12 @@ var commands = exports.commands = {
 		room.battle.send('eval', target.replace(/\n/g, '\f'));
 	},
 
+        if (target === 'all' || target === 'stafflist') {
+                        matched = true;
+                        this.sendReply('/stafflist - Shows you the list of staff members.');
+        	}
+	},
+	
 	/*********************************************************
 	 * Battle commands
 	 *********************************************************/
