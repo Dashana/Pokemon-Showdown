@@ -79,7 +79,13 @@ exports.BattleMovedex = {
 	},
 	chatter: {
 		inherit: true,
-		basePower: 60
+		basePower: 60,
+		desc: "Deals damage to one adjacent or non-adjacent target. This move has an X% chance to confuse the target, where X is 0 unless the user is a Chatot that hasn't Transformed. If the user is a Chatot, X is 0 or 10 depending on the volume of Chatot's recorded cry, if any; 0 for a low volume or no recording, 10 for a medium to high volume recording. Pokemon with the Ability Soundproof are immune.",
+		shortDesc: "10% chance to confuse the target.",
+		secondary: {
+			chance: 10,
+			volatileStatus: 'confusion'
+		}
 	},
 	copycat: {
 		inherit: true,
@@ -145,7 +151,6 @@ exports.BattleMovedex = {
 		basePowerCallback: function(target, source, move) {
 			if (move.sourceEffect in {grasspledge:1, waterpledge:1}) {
 				this.add('-combine');
-				this.debug('triple damage');
 				return 150;
 			}
 			return 50;
@@ -201,7 +206,6 @@ exports.BattleMovedex = {
 		basePowerCallback: function(target, source, move) {
 			if (move.sourceEffect in {waterpledge:1, firepledge:1}) {
 				this.add('-combine');
-				this.debug('triple damage');
 				return 150;
 			}
 			return 50;
@@ -361,6 +365,27 @@ exports.BattleMovedex = {
 		inherit: true,
 		accuracy: 85,
 		basePower: 100
+	},
+	metronome: {
+		inherit: true,
+		onHit: function(target) {
+			var moves = [];
+			for (var i in exports.BattleMovedex) {
+				var move = exports.BattleMovedex[i];
+				if (i !== move.id) continue;
+				if (move.isNonstandard) continue;
+				var noMetronome = {
+					afteryou:1, assist:1, bestow:1, chatter:1, copycat:1, counter:1, covet:1, destinybond:1, detect:1, endure:1, feint:1, focuspunch:1, followme:1, freezeschok:1, helpinghand:1, iceburn:1, mefirst:1, metronome:1, mimic:1, mirrorcoat:1, mirrormove:1, naturepower:1, protect:1, quash:1, quickguard:1, ragepowder:1, relicsong:1, secretsword:1, sketch:1, sleeptalk:1, snarl:1, snatch:1, snore:1, struggle:1, switcheroo:1, technoblast:1, thief:1, transform:1, trick:1, vcreate:1, wideguard:1
+				};
+				if (!noMetronome[move.id] && move.num < 560) {
+					moves.push(move.id);
+				}
+			}
+			var move = '';
+			if (moves.length) move = moves[this.random(moves.length)];
+			if (!move) return false;
+			this.useMove(move, target);
+		}
 	},
 	minimize: {
 		inherit: true,
@@ -633,7 +658,6 @@ exports.BattleMovedex = {
 		basePowerCallback: function(target, source, move) {
 			if (move.sourceEffect in {firepledge:1, grasspledge:1}) {
 				this.add('-combine');
-				this.debug('triple damage');
 				return 150;
 			}
 			return 50;

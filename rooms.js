@@ -244,7 +244,10 @@ var GlobalRoom = (function() {
 
 		formatid = toId(formatid);
 
-		if (!user.prepBattle(formatid, 'search')) return;
+		user.prepBattle(formatid, 'search', null, this.finishSearchBattle.bind(this, user, formatid));
+	};
+	GlobalRoom.prototype.finishSearchBattle = function(user, formatid, result) {
+		if (!result) return;
 
 		// tell the user they've started searching
 		var newSearchData = {
@@ -274,10 +277,10 @@ var GlobalRoom = (function() {
 		if (user1.lastMatch === user2.userid || user2.lastMatch === user1.userid) return false;
 
 		// search must be within range
-		var searchRange = 250, formatid = search1.formatid, elapsed = Math.abs(search1.time-search2.time);
-		if (formatid === 'ou' || formatid === 'oucurrent' || formatid === 'randombattle') searchRange = 150;
+		var searchRange = 100, formatid = search1.formatid, elapsed = Math.abs(search1.time-search2.time);
+		if (formatid === 'ou' || formatid === 'oucurrent' || formatid === 'randombattle') searchRange = 50;
 		searchRange += elapsed/300; // +1 every .3 seconds
-		if (searchRange > 1200) searchRange = 1200;
+		if (searchRange > 300) searchRange = 300;
 		if (Math.abs(search1.rating - search2.rating) > searchRange) return false;
 
 		user1.lastMatch = user2.userid;
@@ -460,6 +463,7 @@ var GlobalRoom = (function() {
 			i++;
 		}
 		this.lastBattle = i;
+		rooms.global.writeNumRooms();
 		newRoom = this.addRoom('battle-'+formaturlid+'-'+i, format, p1, p2, this.id, rated);
 		p1.joinRoom(newRoom);
 		p2.joinRoom(newRoom);
@@ -504,11 +508,13 @@ var BattleRoom = (function() {
 		this.id = roomid;
 		this.title = ""+p1.name+" vs. "+p2.name;
 		this.i = {};
+		this.modchat = (config.battlemodchat || false);
 
 		format = ''+(format||'');
 
 		this.users = {};
 		this.format = format;
+		this.auth = {};
 		//console.log("NEW BATTLE");
 
 		var formatid = toId(format);
@@ -727,7 +733,6 @@ var BattleRoom = (function() {
 			});
 		}); // asychronicity
 		//console.log(JSON.stringify(logData));
-		rooms.global.writeNumRooms();
 	};
 	BattleRoom.prototype.send = function(message, user) {
 		if (user) {
@@ -1054,10 +1059,12 @@ var BattleRoom = (function() {
 			} else if (this.rated.p2 === user.userid) {
 				slot = 1;
 			} else {
-				return;
+				user.popup("This is a rated battle; your username must be "+this.rated.p1+" or "+this.rated.p2+" to join.");
+				return false;
 			}
 		}
 
+		this.auth[user.userid] = '\u2605';
 		this.battle.join(user, slot, team);
 		rooms.global.battleCount += (this.battle.active?1:0) - (this.active?1:0);
 		this.active = this.battle.active;
@@ -1079,6 +1086,7 @@ var BattleRoom = (function() {
 		} else {
 			return false;
 		}
+		this.auth[user.userid] = '+';
 		rooms.global.battleCount += (this.battle.active?1:0) - (this.active?1:0);
 		this.active = this.battle.active;
 		this.update();
@@ -1178,6 +1186,7 @@ var ChatRoom = (function() {
 		this.destroyingLog = false;
 		this.bannedUsers = {};
 		this.bannedIps = {};
+		this.modchat = (config.chatmodchat || false);
 
 		// `config.loglobby` is a legacy name
 		if (config.logchat || config.loglobby) {

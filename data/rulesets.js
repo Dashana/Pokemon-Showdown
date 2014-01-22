@@ -44,7 +44,7 @@ exports.BattleFormats = {
 			'Zekrom',
 			'Kyurem', 'Kyurem-Black', 'Kyurem-White',
 			'Keldeo', 'Keldeo-Resolute',
-			'Meloetta',
+			'Meloetta', 'Meloetta-Pirouette',
 			'Genesect',
 			'Xerneas',
 			'Yveltal',
@@ -173,6 +173,9 @@ exports.BattleFormats = {
 					problems.push('Meloetta-Pirouette transforms in-battle with Relic Song.');
 				}
 				set.species = 'Meloetta';
+			}
+			if (template.num == 681) { // Aegislash
+				set.species = 'Aegislash';
 			}
 			return problems;
 		}
@@ -370,7 +373,7 @@ exports.BattleFormats = {
 	endlessbattleclause: {
 		effectType: 'Banlist',
 		name: 'Endless Battle Clause',
-		banlist: ['Heal Pulse + Leppa Berry + Recycle', 'Pain Split + Leppa Berry + Recycle', 'Fling + Leppa Berry + Recycle'],
+		banlist: ['Leppa Berry + Recycle'],
 		onStart: function() {
 			this.add('rule', 'Endless Battle Clause: Forcing endless battles is banned.');
 		}
