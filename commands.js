@@ -825,13 +825,6 @@ var commands = exports.commands = {
 		this.sendReplyBox('Server version: <b>'+CommandParser.package.version+'</b> <small>(<a href="http://pokemonshowdown.com/versions#' + CommandParser.serverVersion + '">' + CommandParser.serverVersion.substr(0,10) + '</a>)</small>');
 	},
 
-
-var crypto = require('crypto');
-
-const MAX_REASON_LENGTH = 300;
-
-var commands = exports.commands = {
-
 	// Friends lists, from frost 
 	friends: function(target, room, user, connection) {
 		var data = fs.readFileSync('config/friends.csv','utf8')
